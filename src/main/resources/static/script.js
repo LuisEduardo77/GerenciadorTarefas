@@ -42,18 +42,18 @@ const modalAdicionar = document.getElementById('modal-adicionar');
     //  BUSCAR TAREFAS (GET)
     // ===============================
     async function carregarTarefas() {
-        listaTarefasEl.innerHTML = "";
+    listaTarefasEl.innerHTML = ""; // Limpa a lista atual
 
-        try {
-            const resposta = await fetch("http://localhost:8080/tarefas");
-            const tarefas = await resposta.json();
-             mostrarTarefasNaTela(tarefas);
+    try {
+        const resposta = await fetch("http://localhost:8080/tarefas");
+        const tarefas = await resposta.json();
+        
+        tarefas.forEach(t => criarElementoTarefa(t));
 
-            //tarefas.forEach(t => criarElementoTarefa(t));
-        } catch (e) {
-            console.error("Erro ao buscar tarefas:", e);
-        }
+    } catch (e) {
+        console.error("Erro ao buscar tarefas:", e);
     }
+}
 
 
     // ===============================
@@ -79,14 +79,19 @@ const modalAdicionar = document.getElementById('modal-adicionar');
 
     // botão editar
     article.querySelector(".btn-edit").addEventListener("click", () => {
-        tarefaSelecionada = tarefa;
-        abrirModalEditar(tarefa);
+    tarefaSelecionada = tarefa;
+    abrirModalEditar(tarefa);
     });
 
     // botão excluir
     article.querySelector(".btn-delete").addEventListener("click", () => {
-        tarefaSelecionada = tarefa;
-        esconderModal(modalAlterar);
+    tarefaSelecionada = tarefa;
+    
+    // CORREÇÃO: Usar o ID da tarefa salva para configurar o modal de exclusão
+    const titulo = tarefa.titulo;
+    modalExcluir.querySelector('p').textContent = `Deseja excluir a tarefa "${titulo}"?`;
+    esconderModal(modalAlterar); // Esconde o modal de alteração se estiver aberto (manter)
+    mostrarModal(modalExcluir);  // 💡 CHAMA O MODAL DE EXCLUSÃO
     });
 
     listaTarefasEl.appendChild(article);
@@ -127,39 +132,39 @@ const modalAdicionar = document.getElementById('modal-adicionar');
     //  EDITAR (PUT)
     // ===============================
     function abrirModalEditar(t) {
-        document.getElementById("edit-titulo").value = t.titulo;
-        document.getElementById("edit-responsavel").value = t.responsavel;
-        document.getElementById("edit-data").value = t.dataTermino;
-        document.getElementById("edit-detalhamento").value = t.detalhamento;
+    document.getElementById("edit-titulo").value = t.titulo;
+    document.getElementById("edit-responsavel").value = t.responsavel;
+    document.getElementById("edit-data").value = t.dataTermino;
+    document.getElementById("edit-detalhamento").value = t.detalhamento;
 
-        modalEditar.classList.remove("hidden");
+    modalAlterar.classList.remove("hidden");
+}
+
+modalAlterar.querySelector("form").addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const tarefaAtualizada = {
+        titulo: document.getElementById("edit-titulo").value,
+        responsavel: document.getElementById("edit-responsavel").value,
+        dataTermino: document.getElementById("edit-data").value,
+        detalhamento: document.getElementById("edit-detalhamento").value
+    };
+
+    try {
+        await fetch(`http://localhost:8080/tarefas/${tarefaSelecionada.id}`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(tarefaAtualizada)
+        });
+
+        modalAlterar.querySelector("form").reset();
+        modalAlterar.classList.add("hidden");
+        carregarTarefas();
+
+    } catch (e) {
+        console.error("Erro ao editar tarefa:", e);
     }
-
-    modalEditar.querySelector("form").addEventListener("submit", async (e) => {
-        e.preventDefault();
-
-        const tarefaAtualizada = {
-            titulo: document.getElementById("edit-titulo").value,
-            responsavel: document.getElementById("edit-responsavel").value,
-            dataTermino: document.getElementById("edit-data").value,
-            detalhamento: document.getElementById("edit-detalhamento").value
-        };
-
-        try {
-            await fetch(`http://localhost:8080/tarefas/${tarefaSelecionada.id}`, {
-                method: "PUT",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(tarefaAtualizada)
-            });
-
-            modalEditar.querySelector("form").reset();
-            modalEditar.classList.add("hidden");
-            carregarTarefas();
-
-        } catch (e) {
-            console.error("Erro ao editar tarefa:", e);
-        }
-    });
+});
 
 
     // ===============================
