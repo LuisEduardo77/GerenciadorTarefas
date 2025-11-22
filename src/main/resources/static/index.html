@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerenciador de Tarefas</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="app-container" id="tela-lista">
+        <header class="app-header">
+            <h1>Gerenciador de Tarefas</h1>
+        </header>
+        
+        <main class="app-main">
+            <div class="task-list">
+                
+                
+            </div>
+
+            <button class="btn btn-primary btn-full-width" id="btn-show-add">Incluir nova tarefa</button>
+        </main>
+        
+        <footer class="app-footer">
+            <p>Adriane Helfstein de Jesus / Luis Eduardo Belo Silva / 3NB / 2025</p>
+        </footer>
+    </div>
+
+    <div id="modal-adicionar" class="modal-overlay hidden">
+        <div class="modal-content">
+            <form class="task-form">
+                <h2>Incluir nova tarefa</h2>
+                
+                <div class="form-group">
+                    <label for="add-titulo">Título</label>
+                    <input type="text" id="add-titulo" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="add-responsavel">Responsável</label>
+                    <input type="text" id="add-responsavel" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="add-data">Data de término</label>
+                    <input type="date" id="add-data" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="add-detalhamento">Detalhamento</label>
+                    <textarea id="add-detalhamento" rows="4"></textarea>
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary btn-cancel">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Salvar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+    <div id="modal-alterar" class="modal-overlay hidden">
+        <div class="modal-content">
+            <form class="task-form">
+                <h2>Alterar tarefa</h2>
+                
+                <div class="form-group">
+                    <label for="edit-titulo">Título</label>
+                    <input type="text" id="edit-titulo" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="edit-responsavel">Responsável</label>
+                    <input type="text" id="edit-responsavel" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="edit-data">Data de término</label>
+                    <input type="date" id="edit-data" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="edit-detalhamento">Detalhamento</label>
+                    <textarea id="edit-detalhamento" rows="4"></textarea>
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary btn-cancel">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Salvar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="delete-modal" class="modal-overlay hidden">
+        <div class="modal-content">
+            <p>Deseja excluir a tarefa?</p>
+            <div class="modal-actions">
+                <button class="btn btn-primary" id="modal-btn-sim">SIM</button>
+                <button class="btn btn-danger" id="modal-btn-nao">NÃO</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+
+</body>
+</html>
