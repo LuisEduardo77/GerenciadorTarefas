@@ -66,26 +66,20 @@ const modalAdicionar = document.getElementById('modal-adicionar');
     let tagAtrasada = '';
     const dataTermino = tarefa.dataTermino;
     
-    // Lógica para verificar se está atrasada
     if (dataTermino) {
-        // Cria um objeto Date para a data de hoje (meia-noite)
         const hoje = new Date();
         hoje.setHours(0, 0, 0, 0); 
         
-        // dataTermino vem no formato "AAAA-MM-DD" do backend.
         const [ano, mes, dia] = dataTermino.split('-').map(Number);
-        // O mês no JavaScript é base 0 (janeiro é 0), então subtraímos 1.
+
         const dataVencimento = new Date(ano, mes - 1, dia);
 
-        // Compara: se a data de vencimento for MENOR que hoje, está atrasada.
         if (dataVencimento < hoje) {
-            // Usa a classe CSS que já existe (tag-overdue)
             tagAtrasada = '<span class="tag-overdue">ATRASADA</span>';
-            article.classList.add('overdue'); // Opcional: Adiciona uma classe ao item todo
+            article.classList.add('overdue');
         }
     }
     
-    // Formata a data para exibição se existir
     const dataFormatada = dataTermino || "Sem data";
 
     article.innerHTML = `
